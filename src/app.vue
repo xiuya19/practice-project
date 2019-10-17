@@ -25,6 +25,7 @@ export default {
       .then(res => {
         this.itemListTitle = res.data.message;
         this.$bus.emit("item-list-title", this.itemListTitle);
+		console.log(this.itemListTitle);
       })
       .catch(err => console.log("列表获取错误", err));
   },
