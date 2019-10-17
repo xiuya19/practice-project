@@ -1,0 +1,161 @@
+{
+    "0":{
+        "title":"公仔",
+        "data":[{
+            "itemId": "0",
+            "itemName": "泰迪熊",
+            "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+            "price": 150
+          },
+          {
+            "itemId": "1",
+            "itemName": "小猪佩奇",
+            "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+            "price": 250
+          },
+          {
+            "itemId": "2",
+            "itemName": "小熊猫一对",
+            "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+            "price": 250
+          }]
+        },
+    "1":{
+        "title":"汽车",
+        "data":[
+            {
+                "itemId": "0",
+                "itemName": "小轿车",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 250
+              },
+              {
+                "itemId": "1",
+                "itemName": "卡车",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 300
+              },
+              {
+                "itemId": "2",
+                "itemName": "消防车",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 150
+              }
+        ]
+    },
+    "2":{
+        "title":"零食",
+        "data":[
+            {
+                "itemId": "0",
+                "itemName": "薯片",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 8
+              },
+              {
+                "itemId": "1",
+                "itemName": "糖果",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 10
+              },
+              {
+                "itemId": "2",
+                "itemName": "饼干",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 15
+              }
+        ]
+    },
+    "3":{
+        "title":"图书",
+        "data":[
+            {
+                "itemId": "0",
+                "itemName": "白雪公主",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 100
+              },
+              {
+                "itemId": "1",
+                "itemName": "睡美人",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 110
+              },
+              {
+                "itemId": "2",
+                "itemName": "阿拉丁",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 120
+              }
+        ]
+    },
+    "4":{
+        "title":"饮料",
+        "data":[
+            {
+                "itemId": "0",
+                "itemName": "可乐",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 7
+              },
+              {
+                "itemId": "1",
+                "itemName": "雪碧",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 8
+              },
+              {
+                "itemId": "2",
+                "itemName": "橙汁",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 9
+              }
+        ]
+    },
+    "5":{
+        "title":"飞机",
+        "data":[
+            {
+                "itemId": "0",
+                "itemName": "战斗机",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 200
+              },
+              {
+                "itemId": "1",
+                "itemName": "直升飞机",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 300
+              },
+              {
+                "itemId": "2",
+                "itemName": "隐形战机",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 350
+              }
+        ]
+    },
+    "6":{
+        "title":"超人",
+        "data":[
+            {
+                "itemId": "0",
+                "itemName": "奥特曼",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 150
+              },
+              {
+                "itemId": "1",
+                "itemName": "铠甲勇士",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 250
+              },
+              {
+                "itemId": "2",
+                "itemName": "假面骑士",
+                "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+                "price": 250
+              }
+        ]
+    }
+}

@@ -1,0 +1,38 @@
+{
+  "message": [{
+    "id": 0,
+    "type": "公仔",
+    "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+  },
+  {
+    "id": 1,
+    "type": "赛车",
+    "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+  },
+  {
+    "id": 2,
+    "type": "零食",
+    "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+  },
+  {
+    "id": 3,
+    "type": "图书",
+    "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+  },
+  {
+    "id": 4,
+    "type": "饮料",
+    "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+  },
+  {
+    "id": 5,
+    "type": "飞机",
+    "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+  },
+  {
+    "id": 6,
+    "type": "超人",
+    "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+  }
+]
+}

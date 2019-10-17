@@ -1,0 +1,21 @@
+{
+    "0":{
+        "itemId": 0,
+        "name": "泰迪熊",
+        "subName": "电影同款 美国原版",
+        "price": 150,
+        "material": "纯棉",
+        "size": "20cm*30cm",
+        "src": "https://fn.storage.img.ztzl.moe/2019/08/14/http.png",
+        "detailSrc":[
+            {
+                "id":0,
+                "src":"https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+            },
+            {
+                "id":1,
+                "src":"https://fn.storage.img.ztzl.moe/2019/08/14/http.png"
+            }
+        ]
+    }
+}
