@@ -1,14 +1,12 @@
 <template>
   <div class="topFixed backgroud">
+
     <Head :title="title"></Head>
-    <div 
-      class="course-list" 
-      v-for="course in courseList" 
-      :key="course.id">
-      <router-link 
-        class="course-box" 
-        :to="{name:'courseDetail',query:{courseId:course.id}}"
-      >
+    <div class="course-list"
+         v-for="course in courseList"
+         :key="course.id">
+      <router-link class="course-box"
+                   :to="{name:'courseDetail',query:{courseId:course.id}}">
         <span>{{course.title}}</span>
         <span>&#62;</span>
       </router-link>
@@ -17,24 +15,53 @@
 </template>
 
 <script>
+import routerMap from '../routerMap/routerMap'
+const axiosPath = 'api/courseList'
 export default {
-  name: "",
+  name: 'courseList',
   props: {},
-  data() {
+  data () {
     return {
-      title: "",
-      courseList:[]
+      title: '',
+      courseList: []
     };
   },
-  created() {
-    this.$axios
-      .get(`api/courseList?listId=${this.$route.query.courseTypeId}`)
-      .then(res => {
-        this.title = res.data.message.title;
-        this.courseList = res.data.message.list;
-
+  methods: {
+    getData: function (path, callback) {
+      /**
+       * 根据path进行axios请求
+       * 获取的数据传入callback执行
+       */
+      this.$axios
+        .get(path)
+        .then(res => {
+          callback(res)
+        })
+        .catch(err => console.log('物品类型列表获取失败', err))
+    },
+    deleteData: function () {
+      this.courseList = []
+    }
+  },
+  created () {
+    this.isFirstEnter = true
+  },
+  beforeRouteEnter (to, from, next) {
+    if (routerMap[to.name] === from.name) {
+      to.meta.isBack = true
+    }
+    next()
+  },
+  activated () {
+    if (!this.$route.meta.isBack || this.isFirstEnter) {
+      this.deleteData()
+      this.getData(`${axiosPath}?listId=${this.$route.query.courseTypeId}`, (res) => {
+        this.title = res.data.message.title
+        this.courseList = this.$deepCloneJson(res.data.message.data)
       })
-      .catch(err => console.log("列表获取错误", err));
+    }
+    this.$route.meta.isBack = false
+    this.isFirstEnter = false
   }
 };
 </script>
@@ -43,16 +70,16 @@ export default {
   width: 100%;
   padding: 2em;
   box-sizing: border-box;
-  border:1px solid #000;
+  border: 1px solid #000;
 }
-.course-box{
+.course-box {
   text-decoration: none;
 }
-.course-list span{
+.course-list span {
   font-size: 2.5em;
-  color:#000;
+  color: #000;
 }
-.course-list span:last-of-type{
+.course-list span:last-of-type {
   float: right;
 }
 </style>

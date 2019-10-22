@@ -1,12 +1,13 @@
 <template>
   <div class="topFixed">
 
-    <Head :title="title"></Head>
-    <div class="course-type-box">
-      <router-link class="courseType"
-                   v-for="it in courseTypes"
+    <Head :title='title'></Head>
+    <Search></Search>
+    <div class="item-type-list">
+      <router-link class="item-type"
+                   v-for="it in typeList"
                    :key="it.id"
-                   :to="{name:'courseList',query:{courseTypeId:it.id}}">
+                   :to="{name:'itemList',query:{listId:it.id}}">
         <img :src="it.src"
              alt />
         <p>{{it.type}}</p>
@@ -16,16 +17,20 @@
 </template>
 
 <script>
+import Search from './search.vue'
 import routerMap from '../routerMap/routerMap'
-const axiosPath = 'api/courseTypeList'
+const axiosPath = 'api/itemListTitle'
 export default {
-  name: 'courseTypeList',
-  props: {},
+  name: 'itemTypeList',
   data () {
     return {
-      title: '课程选择',
-      courseTypes: []
+      title: '礼品商城',
+      isFirstEnter: true,
+      typeList: [],
     };
+  },
+  components: {
+    Search
   },
   methods: {
     getData: function (path, callback) {
@@ -41,7 +46,7 @@ export default {
         .catch(err => console.log('物品类型列表获取失败', err))
     },
     deleteData: function () {
-      this.courseTypes = []
+      this.typeList = []
     }
   },
   created () {
@@ -57,7 +62,7 @@ export default {
     if (!this.$route.meta.isBack || this.isFirstEnter) {
       this.deleteData()
       this.getData(axiosPath, (res) => {
-        this.courseTypes = this.$deepCloneJson(res.data.message)
+        this.typeList = this.$deepCloneJson(res.data.message)
       })
     }
     this.$route.meta.isBack = false
@@ -66,30 +71,27 @@ export default {
 };
 </script>
 <style scoped>
-.course-type-box {
-  width: 96%;
-  margin: 0 2% 0 2%;
-  padding-top: 1em;
+.item-type-list {
+  width: 100%;
+  overflow: hidden;
   display: flex;
   flex-wrap: wrap;
+  margin-top: 3em;
 }
-.course-type-box .courseType {
-  display: block;
+.item-type-list .item-type {
+  cursor: pointer;
+  width: 25.5em;
+  margin-left: 2.5em;
+  margin-right: 2.5em;
+  margin-bottom: 3em;
   border: 1px solid #000;
-  width: 32%;
-  margin-top: 2em;
-  box-sizing: border-box;
-  text-decoration: none;
   text-align: center;
+  text-decoration: none;
 }
-.course-type-box .courseType:nth-child(3n-1) {
-  margin-left: 2%;
-  margin-right: 2%;
+.item-type-list .item-type img {
+  width: inherit;
 }
-.course-type-box .courseType * {
-  width: 100%;
-}
-.course-type-box .courseType p {
+.item-type-list .item-type p {
   font-size: 2.5em;
   color: #000;
 }

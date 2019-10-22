@@ -1,8 +1,10 @@
 <template>
   <div class="topFixed">
+
     <Head :title="title"></Head>
     <div class="item">
-      <img :src="item.src" alt />
+      <img :src="item.src"
+           alt />
       <p>{{fullName}}</p>
       <p class="price">￥{{item.price}}</p>
     </div>
@@ -16,13 +18,18 @@
         <span>{{item.size}}</span>
       </p>
     </div>
-    <router-link class="choice clearFix" :to="{name:'courseTypeList'}">
+    <router-link class="choice clearFix"
+                 :to="{name:'courseTypeList'}"
+                 @click.native="seItemId">
       <span>课程选择</span>
       <span>&#62;</span>
     </router-link>
     <div class="item-detail">
       <p>细节图</p>
-      <img v-for="it in item.detailSrc" :key="it.id" :src="it.src" alt />
+      <img v-for="it in item.detailSrc"
+           :key="it.id"
+           :src="it.src"
+           alt />
     </div>
     <div class="button">
       <button class>联系客服</button>
@@ -33,32 +40,67 @@
 </template>
 
 <script>
+import routerMap from '../routerMap/routerMap'
+const axiosPath = 'api/itemDetail'
 export default {
-  name: "itemDetail",
+  name: 'itemDetail',
   props: {},
-  data() {
+  data () {
     return {
-      title: "商品详情",
+      title: '商品详情',
+      isFirstEnter: true,
       item: {}
-    };
+    }
   },
   computed: {
-    fullName() {
+    fullName () {
       return this.item.name + " " + this.item.subName;
     },
-    finalPrice() {
+    finalPrice () {
       return this.item.price;
     }
   },
-  created() {
-    this.$axios
-      .get(`api/itemDetail?itemId=${this.$route.query.itemId}`)
-      .then(res => {
-        
-        this.item = res.data.message;
-        this.$bus.emit('item-info', this.item);
+  methods: {
+    getData: function (path, callback) {
+      /**
+       * 根据path进行axios请求
+       * 获取的数据传入callback执行
+       */
+      this.$axios
+        .get(path)
+        .then(res => {
+          callback(res)
+        })
+        .catch(err => console.log('物品类型列表获取失败', err))
+    },
+    deleteData: function () {
+      this.item = {}
+    },
+    seItemId: function() {
+
+      window.sessionStorage.setItem('item', JSON.stringify(this.item))
+    }
+  },
+  created () {
+    this.isFirstEnter = true
+  },
+  beforeRouteEnter (to, from, next) {
+    if (routerMap[to.name] === from.name) {
+      to.meta.isBack = true
+      window.sessionStorage.setItem('item', '')
+    }
+    next()
+  },
+  activated () {
+    if (!this.$route.meta.isBack || this.isFirstEnter) {
+      this.deleteData()
+      this.getData(`${axiosPath}?itemId=${this.$route.query.itemId}`, (res) => {
+        this.item = this.$deepCloneJson(res.data.message)
+
       })
-      .catch(err => console.log("商品详情获取失败", err));
+    }
+    this.$route.meta.isBack = false
+    this.isFirstEnter = false
   }
 };
 </script>

@@ -1,39 +1,24 @@
 <template>
-  <keep-alive>
-    <router-view />
-  </keep-alive>
+  <div class="app">
+    <transition name="fade">
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive" />
+      </keep-alive>
+    </transition>
+  </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      itemListTitle: [],
-      children: [],
-      order:{}
-    };
-  },
-  created() {
-    this.$axios
-      .get("api/children")
-      .then(res => {
-        this.children = res.data.message.children;
-      })
-      .catch(err => console.log("列表获取错误", err));
-    this.$axios
-      .get("api/itemListTitle")
-      .then(res => {
-        this.itemListTitle = res.data.message;
-        this.$bus.emit("item-list-title", this.itemListTitle);
-		console.log(this.itemListTitle);
-      })
-      .catch(err => console.log("列表获取错误", err));
-  },
-  updated() {
-    this.$bus.emit("children-list", this.children);
-  }
-};
+  name: 'App'
+}
 </script>
 
 <style scoped>
+.fade-enter-active{
+    transition: opacity .3s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active, 2.1.8 版本以下 */ {
+    opacity: 0
+}
 </style>
