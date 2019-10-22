@@ -67,6 +67,14 @@
         <button @click="commitOrder">提交订单</button>
       </div>
     </div>
+    <div class="corver"
+         v-show="popUp">
+    </div>
+    <div class="pop-up"
+         v-show="popUp">
+      <p>{{popUpMessage}}</p>
+      <button @click="nextPage">确定</button>
+    </div>
   </div>
 </template>
 
@@ -78,14 +86,16 @@ export default {
   props: {},
   data () {
     return {
+      popUp: false,
       itemNum: 1,
       title: '确认订单',
       course: '',
       score: '',
+      leaveMessage: '',
+      popUpMessage: '发送成功',
       children: [],
       parent: {},
       item: {},
-      leaveMessage: ''
     };
   },
   computed: {
@@ -111,17 +121,25 @@ export default {
     commitOrder: function () {
       let data = {
         parentId: this.parent.id,
-        children: this.children.map(el => el.id),
+        
         courseId: this.course.id,
         score: this.score,
-        itemId: this.item.id,
+        itemId: this.item.itemId,
         itemNum: this.itemNum,
         leaveMessage: this.leaveMessage
       }
+      this.children.map(el => el.id).forEach( (el, index) => {
+        data[`children${index}`] = el
+      })
       this.$axios.post('api/postOrder', this.$Qs.stringify(data))
         .then(res => {
+          this.popUp = true
           console.log(res)
         })
+    },
+    nextPage: function () {
+      this.popUp = false
+      window.location = '/'
     },
     getData: function (path, callback) {
       /**
@@ -288,5 +306,46 @@ export default {
   background-color: #0066ff;
   border: 0px solid transparent;
   color: #fff;
+}
+
+.corver {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0%;
+  left: 0%;
+  background-color: #999;
+  z-index: 1000;
+  opacity: 0.7;
+}
+.pop-up {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 30em;
+  height: 12em;
+  background-color: #fff;
+  z-index: 1001;
+  text-align: center;
+}
+.pop-up p {
+  font-size: 4em;
+  line-height: 2em;
+}
+.pop-up button {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  font-size: 2.5em;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: 0px solid transparent;
+  border-top: 2px solid #000;
+  outline: none;
 }
 </style>

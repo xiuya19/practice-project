@@ -14,11 +14,11 @@ export default {
       required: true
     }
   },
-  components: {},
-
   methods: {
-    back() {
-      if (this.$route.path === "/home") return;
+    back: function() {
+      if (this.$route.path === "/home") {
+        window.location = '/abc.html'
+      }
       this.$router.go(-1);
     }
   }
@@ -32,7 +32,7 @@ header {
   padding: 2em 0 2em 0;
   text-align: center;
   overflow: hidden;
-  background-color: #ddd;
+  background-color: #7d75eb;
 }
 header span {
   float: left;

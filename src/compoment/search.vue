@@ -1,28 +1,28 @@
 <template>
   <div class="search">
-    <input type="text">
-    <button>搜索</button>
+    <input type="text" v-model="itemName">
+    <button @click="searchItem">搜索</button>
   </div>
 </template>
 
 <script>
-
   export default {
-    name:'search',
-    props:{},
+    name:'searchResult',
     data () {
       return {
-
+        itemName: ''
       };
     },
-
-    components: {},
-
-    methods: {},
-
+    methods: {
+      searchItem: function () {
+        window.sessionStorage.setItem('searchName', this.itemName)
+        window.sessionStorage.setItem('searchItem','')
+        this.$router.push({path: '/searchResult'})
+      }
+    }
   }
-
 </script>
+
 <style scoped>
     .search{
         width: 100%;

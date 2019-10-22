@@ -84,7 +84,7 @@ export default {
   margin-left: 2.5em;
   margin-right: 2.5em;
   margin-bottom: 3em;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   text-align: center;
   text-decoration: none;
 }

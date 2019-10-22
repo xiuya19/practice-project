@@ -22,6 +22,7 @@ app.get('/api/parent', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       let tempData = JSON.parse(data.toString())
@@ -39,6 +40,7 @@ app.get('/api/children', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       let tempData = JSON.parse(data.toString())
@@ -56,6 +58,7 @@ app.get('/api/itemListTitle', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       let _data = JSON.parse(data.toString())
@@ -70,8 +73,10 @@ app.get('/api/itemLists', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else if (!req.query.listId) {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       let tempData = JSON.parse(data.toString())[req.query.listId]
@@ -89,12 +94,20 @@ app.get('/api/itemDetail', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else if (!req.query.itemId) {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       // let tempData = JSON.parse(data.toString())[req.query.itemId];
-      let tempData = JSON.parse(data.toString())[0]
+      let tempData;
+      // console.log(req.query.itemId)
+      if ( req.query.itemId < 2) {
+        tempData = JSON.parse(data.toString())[req.query.itemId];
+      } else {
+        tempData = JSON.parse(data.toString())[0]
+      }
       let _data = {
         code: 2000,
         message: tempData
@@ -109,6 +122,7 @@ app.get('/api/courseTypeList', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       let _data = JSON.parse(data.toString())
@@ -123,6 +137,7 @@ app.get('/api/courseList', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       // let tempData = JSON.parse(data.toString())[req.query.courseId];
@@ -141,6 +156,7 @@ app.get('/api/courseDetail', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       // let tempData = JSON.parse(data.toString())[req.query.listId];
@@ -159,6 +175,7 @@ app.get('/api/buyInfo', (req, res) => {
     if (err) {
       console.log(err)
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
     } else {
       res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
       // let tempData = JSON.parse(data.toString())[req.query.listId];
@@ -181,6 +198,41 @@ app.post('/api/postOrder', urlencodedParser, (req, res) => {
       else res.end('post successfully')
     }
   )
+})
+app.get('/api/search', (req, res) => {
+  let item = req.query
+  // console.log(req.query)
+  fs.readFile(__dirname + '/data/search.json', (err, data) => {
+    if (err) {
+      console.log(err)
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+      res.end()
+    } else {
+      let tempData1 = JSON.parse(data.toString())
+      // console.log(tempData1[item.itemName])
+      if (tempData1[item.itemName] !== undefined) {
+        fs.readFile(__dirname + '/data/searchResult.json', (err, data) => {
+          if (err) {
+            console.log(err)
+            res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' })
+          } else {
+            res.writeHead(200, { 'Content-Type': 'text/json; charset=utf-8' })
+            let tempData2 = JSON.parse(data.toString())
+            let _data = {
+              code: 2000,
+              message: tempData2[tempData1[item.itemName].itemId]
+            }
+            res.end(JSON.stringify(_data))
+          }
+        })
+      } else {
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' })
+        res.end(JSON.stringify({
+          code: 2001
+        }))
+      }
+    }
+  })
 })
 let server = app.listen(port, () => {
   console.log('Express app server listening on port %d', port)

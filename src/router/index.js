@@ -7,7 +7,7 @@ import CourseTypeList from '../compoment/courseTypeList.vue'
 import CourseList from '../compoment/courseList.vue'
 import CourseDetail from '../compoment/courseDetail.vue'
 import Order from '../compoment/order.vue'
-
+import SearchResult from '../compoment/searchResult.vue'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -75,6 +75,15 @@ export default new Router({
       path: '/order',
       name: 'order',
       component: Order,
+      meta: {
+        keepAlive: true,
+        isBack: false
+      }
+    },
+    {
+      path: '/searchResult',
+      name: 'searchResult',
+      component: SearchResult,
       meta: {
         keepAlive: true,
         isBack: false
