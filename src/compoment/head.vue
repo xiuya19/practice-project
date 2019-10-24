@@ -39,7 +39,7 @@ header {
   padding: 2em 0 2em 0;
   text-align: center;
   overflow: hidden;
-  background-color: #7d75eb;
+  background-color: #FFCC00;
 }
 header span {
   float: left;

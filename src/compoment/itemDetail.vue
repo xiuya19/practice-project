@@ -1,6 +1,6 @@
 <template>
   <!-- 物品详情 -->
-  <div class="topFixed">
+  <div class="topFixed  back-color">
 
     <Head :title="title"></Head>
     <!-- 物品主要信息 begin -->
@@ -181,12 +181,14 @@ export default {
 }
 .item-detail p {
   width: 100%;
+  font-size: 1.25em;
+  padding: 0.5em 0;
   box-sizing: border-box;
   border: 1px solid #000;
 }
 .item-detail img {
   width: 100%;
-  padding: 2em;
+  padding: 0.5em 2em 2em 2em;
   box-sizing: border-box;
 }
 /* item-detail end */

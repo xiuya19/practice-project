@@ -2,25 +2,35 @@
   <div class="topFixed">
 
     <Head :title="title"></Head>
+    <!-- search-title begin -->
     <div class="search-title">查找的商品名：{{searchName}}</div>
+    <!-- search-title end -->
+
+    <!-- no-item begin -->
     <div class="no-item"
          v-if="searchFailure">没有名为 {{searchName}} 的商品，请更换关键字搜索</div>
-    <div class="search-list"
+    <!-- no-item end -->
+
+    <!-- item-list-box begin -->
+    <div class="item-list-box"
          v-if="searchSuccess">
-      <router-link class="item-list-box clearFix"
+      <!-- 路由 ->物品详情 begin-->
+      <router-link class="item-list"
                    v-for="it in itemLists"
                    :key="it.id"
                    :to="{name:'itemDetail',query:{itemId:it.itemId}}">
-        <div class="item-box">
+        <div class="item-img-box">
           <img :src="it.src"
-               alt />
-          <span>{{it.itemName}}</span>
+               :alt="it.itemName" />
         </div>
-        <div class="price-box">
+        <div class="item-info-box">
+          <p>{{it.itemName}}</p>
           <p>价格：{{it.price}}</p>
         </div>
       </router-link>
+      <!-- 路由 对应种类物品的列表->物品详情 end-->
     </div>
+    <!-- item-list-box begin -->
   </div>
 </template>
 <script>
@@ -57,6 +67,7 @@ export default {
     }
   },
   computed: {
+    /*是否查找到商品 */
     searchSuccess: function () {
       return this.itemLists.length > 0
     },
@@ -102,32 +113,49 @@ export default {
   text-align: center;
   padding: 0.5em 0 0.5em 0;
 }
+
+/* item-list-box begin */
 .item-list-box {
+  width: 58em;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+/* item-list begin */
+.item-list-box .item-list {
   width: 100%;
   box-sizing: border-box;
-  display: block;
-  padding: 2em;
-  border: 1px solid #000;
-}
-.item-list-box .item-box {
-  float: left;
   display: flex;
-  line-height: 20em;
+  box-sizing: border-box;
+  border: 0.2em solid #fff;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 1em;
+  justify-content: space-between;
+  background-color: #fff;
+  text-decoration: none;
 }
-.item-list-box .item-box img {
+
+/* item-img-box begin */
+.item-list-box .item-list .item-img-box img {
   width: 20em;
   height: 20em;
 }
-.item-list-box .price-box {
-  float: right;
-  line-height: 20em;
+/* item-img-box end */
+
+/* item-info-box begin */
+.item-list-box .item-list .item-info-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1em 1em 1em 0;
+  box-sizing: border-box;
 }
-p,
-span {
+.item-info-box p {
+  text-align: right;
   font-size: 3em;
-  color: #777;
+  color: #000;
 }
-span {
-  padding-left: 1em;
-}
+/* item-info-box end */
+/* item-list end */
+/* item-list-box end */
 </style>

@@ -4,10 +4,10 @@
 
     <Head :title="title"></Head>
     <!-- course-list begin -->
-    <div class="course-list"
-         v-for="course in courseList"
-         :key="course.id">
+    <div class="course-list-box">
       <router-link class="course-box"
+                   v-for="course in courseList"
+                   :key="course.id"
                    :to="{name:'courseDetail',query:{courseId:course.id}}">
         <span>{{course.title}}</span>
         <span>&#62;</span>
@@ -59,9 +59,9 @@ export default {
      */
     if (routerMap[to.name] === from.name) {
       to.meta.isBack = true
-      window.sessionStorage.setItem('score','')
-      window.sessionStorage.setItem('course','')
-      window.sessionStorage.setItem('selectChildren','')
+      window.sessionStorage.setItem('score', '')
+      window.sessionStorage.setItem('course', '')
+      window.sessionStorage.setItem('selectChildren', '')
     }
     next()
   },
@@ -84,23 +84,28 @@ export default {
 <style scoped>
 /* module courseList begin */
 
-/* course-list begin */
-.course-list {
-  width: 100%;
-  padding: 2em;
+/* course-list-box begin */
+.course-list-box {
+  width: 58em;
   box-sizing: border-box;
-  border: 1px solid #000;
+  padding-top: 1em;
+  margin: 0 auto;
+  /* border: 1px solid #000; */
 }
 .course-box {
+  background-color: #fff;
   text-decoration: none;
   display: flex;
-  justify-content:space-between;
+  margin-bottom: 1em;
+  border-radius: 1em;
+  padding: 1.5em;
+  justify-content: space-between;
 }
-.course-list span {
-  font-size: 2.5em;
+.course-list-box span {
+  font-size: 3em;
   color: #000;
 }
-.course-list span:last-of-type {
+.course-list-box span:last-of-type {
   float: right;
 }
 /* course-list end */

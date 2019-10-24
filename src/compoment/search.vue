@@ -36,7 +36,7 @@ export default {
   padding: 1.4em 2em 1.4em 2em;
   display: flex;
   box-sizing: border-box;
-
+  background-color: #fff;
   border: 1px solid #111;
 }
 .search input {

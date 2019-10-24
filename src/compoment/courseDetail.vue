@@ -1,6 +1,6 @@
 <template>
   <!-- 课程详情 -->
-  <div class="topFixed bottomFixed">
+  <div class="topFixed bottomFixed back-color">
 
     <Head :title="course.name"></Head>
     <!-- course-detail-box begin -->
@@ -232,8 +232,8 @@ export default {
 .course-commit button {
   width: 100%;
   color: #fff;
-  background-color: #0066ff;
-  font-size: 3em;
+  background-color: #2E2EFE;
+  font-size: 4em;
   text-align: center;
 }
 /* course-commit end */

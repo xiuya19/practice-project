@@ -1,5 +1,5 @@
 <template>
-  <div class="topFixed">
+  <div class="topFixed back-color">
 
     <Head :title="title"></Head>
     <!-- order-box begin -->
@@ -98,38 +98,33 @@
       <!-- order-commit end -->
     </div>
     <!-- order-box begin -->
+    <PopWindow :title="popTitle"
+               :content="popContent"
+               :showPop="showPop"
+               @popCommit="popCommit"></PopWindow>
 
-    <!-- corver begin 遮罩-->
-    <div class="corver"
-         v-show="popUp">
-    </div>
-    <!-- corver end -->
-
-    <!-- pop-up begin -->
-    <div class="pop-up"
-         v-show="popUp">
-      <p>{{popUpMessage}}</p>
-      <button @click="nextPage">确定</button>
-    </div>
-    <!-- pop-up end -->
   </div>
 </template>
 
 <script>
 import routerMap from '../routerMap/routerMap'
+import PopWindow from './popWindow.vue'
 const axiosPath = 'api/parent'
 export default {
   name: 'order',
-  props: {},
+  components: {
+    PopWindow
+  },
   data () {
     return {
-      popUp: false,
+      showPop: false,
       itemNum: 1,
-      title: '确认订单',
       course: '',
       score: '',
       leaveMessage: '',
-      popUpMessage: '发送成功',
+      title: '确认订单',
+      popTitle: '提示信息',
+      popContent: '发送成功',
       children: [],
       parent: {},
       item: {},
@@ -159,6 +154,17 @@ export default {
         this.itemNum--;
       }
     },
+    popCommit: function () {
+      /**
+          * 提交订单后的重定向
+      */
+      this.showPop = false
+      window.sessionStorage.setItem('item', '')
+      window.sessionStorage.setItem('score', '')
+      window.sessionStorage.setItem('course', '')
+      window.sessionStorage.setItem('selectChildren', '')
+      window.location = '/'
+    },
     commitOrder: function () {
       /**
        * 提交订单
@@ -177,20 +183,9 @@ export default {
       })
       this.$axios.post('api/postOrder', this.$Qs.stringify(data))
         .then(res => {
-          this.popUp = true
+          this.showPop = true
           console.log(res)
         })
-    },
-    nextPage: function () {
-      /**
-       * 提交订单后的重定向
-       */
-      this.popUp = false
-      window.sessionStorage.setItem('item', '')
-      window.sessionStorage.setItem('score', '')
-      window.sessionStorage.setItem('course', '')
-      window.sessionStorage.setItem('selectChildren', '')
-      window.location = '/'
     },
     getData: function (path, callback) {
       /**

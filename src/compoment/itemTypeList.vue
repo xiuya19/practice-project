@@ -111,8 +111,13 @@ export default {
   text-align: center;
   text-decoration: none;
 }
+.item-type-list .item-type {
+  background-color: #fff;
+  border-radius: 1em;
+}
 .item-type-list .item-type img {
   width: inherit;
+  border-radius: 1em 1em 0 0;
 }
 .item-type-list .item-type p {
   font-size: 2.5em;

@@ -3,21 +3,23 @@
   <div class="topFixed">
 
     <Head :title="title"></Head>
-    <!-- 路由 ->物品详情 begin-->
-    <router-link class="item-list-box clearFix"
-                 v-for="it in itemLists"
-                 :key="it.id"
-                 :to="{name:'itemDetail',query:{itemId:it.itemId}}">
-      <div class="item-box">
-        <img :src="it.src"
-             :alt="it.itemName" />
-        <span>{{it.itemName}}</span>
-      </div>
-      <div class="price-box">
-        <p>价格：{{it.price}}</p>
-      </div>
-    </router-link>
-    <!-- 路由 对应种类物品的列表->物品详情 end-->
+    <div class="item-list-box">
+      <!-- 路由 ->物品详情 begin-->
+      <router-link class="item-list"
+                   v-for="it in itemLists"
+                   :key="it.id"
+                   :to="{name:'itemDetail',query:{itemId:it.itemId}}">
+        <div class="item-img-box">
+          <img :src="it.src"
+               :alt="it.itemName" />
+        </div>
+        <div class="item-info-box">
+          <p>{{it.itemName}}</p>
+          <p>价格：{{it.price}}</p>
+        </div>
+      </router-link>
+      <!-- 路由 对应种类物品的列表->物品详情 end-->
+    </div>
   </div>
 </template>
 
@@ -88,40 +90,48 @@ export default {
 
 /* item-list-box begin */
 .item-list-box {
+  width: 58em;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+
+/* item-list begin */
+.item-list-box .item-list {
   width: 100%;
   box-sizing: border-box;
-  display: block;
-  padding: 2em;
-  border: 1px solid #000;
-}
-/* item-box begin */
-.item-list-box .item-box {
-  float: left;
   display: flex;
-  line-height: 20em;
+  box-sizing:border-box;
+  border: 0.2em solid #fff;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 1em;
+  justify-content: space-between;
+  background-color: #fff;
+  text-decoration: none;
 }
-.item-list-box .item-box img {
+
+/* item-img-box begin */
+.item-list-box .item-list .item-img-box img{
   width: 20em;
   height: 20em;
 }
-.price-box p,
-.item-box span {
+/* item-img-box end */
+
+/* item-info-box begin */
+.item-list-box .item-list .item-info-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1em 1em 1em 0;
+  box-sizing: border-box;
+}
+.item-info-box p{
+  text-align: right;
   font-size: 3em;
-  color: #777;
+  color: #000;
 }
-.item-box span {
-  padding-left: 1em;
-}
-/* item-box end */
-
-/* price-box begin */
-.item-list-box .price-box {
-  float: right;
-  line-height: 20em;
-}
-/* price-box end */
-
+/* item-info-box end */
+/* item-list end */
 /* item-list-box end */
-
 /* module itemList end */
 </style>

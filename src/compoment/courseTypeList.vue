@@ -92,7 +92,9 @@ export default {
 }
 .course-type-box .course-type {
   display: block;
-  border: 1px solid #000;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 1em;
   width: 18.5em;
   margin-top: 2em;
   box-sizing: border-box;
@@ -106,6 +108,9 @@ export default {
 }
 .course-type-box .course-type * {
   width: 100%;
+}
+.course-type-box .course-type img {
+  border-radius: 1em 1em 0 0;
 }
 .course-type-box .course-type p {
   font-size: 2.5em;
