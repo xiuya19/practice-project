@@ -6,7 +6,7 @@ import Qs from 'qs'
 import './assets/style/global.css'
 import Head from './compoment/head.vue'
 
-Axios.defaults.baseURL = 'http://127.0.0.1:8888/'
+Axios.defaults.baseURL = 'http://49.234.206.216:8888/'
 Vue.prototype.$axios = Axios
 Vue.prototype.$Qs = Qs
 Vue.prototype.$deepCloneJson = (obj) => JSON.parse(JSON.stringify(obj))

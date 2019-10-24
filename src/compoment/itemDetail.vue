@@ -1,13 +1,18 @@
 <template>
+  <!-- 物品详情 -->
   <div class="topFixed">
 
     <Head :title="title"></Head>
-    <div class="item">
+    <!-- 物品主要信息 begin -->
+    <div class="item-info">
       <img :src="item.src"
            alt />
       <p>{{fullName}}</p>
       <p class="price">￥{{item.price}}</p>
     </div>
+    <!-- 物品主要信息 end -->
+
+    <!-- 物品参数 begin -->
     <div class="item-status">
       <p class="clearFix">
         <span>材料</span>
@@ -18,12 +23,9 @@
         <span>{{item.size}}</span>
       </p>
     </div>
-    <router-link class="choice clearFix"
-                 :to="{name:'courseTypeList'}"
-                 @click.native="seItemId">
-      <span>课程选择</span>
-      <span>&#62;</span>
-    </router-link>
+    <!-- 物品参数 end -->
+
+    <!-- 物品细节图 begin-->
     <div class="item-detail">
       <p>细节图</p>
       <img v-for="it in item.detailSrc"
@@ -31,17 +33,20 @@
            :src="it.src"
            alt />
     </div>
-    <div class="button">
+    <!-- 物品细节图 end -->
+
+    <div class="item-router-button">
       <button class>联系客服</button>
       <p class="price">总共：￥{{finalPrice}}</p>
-      <button class="buy">立即购买</button>
+      <button class="buy"
+              @click="toCourse">选择课程</button>
     </div>
   </div>
 </template>
 
 <script>
 import routerMap from '../routerMap/routerMap'
-const axiosPath = 'api/itemDetail'
+const axiosPath = 'api/itemDetail'//本页面请求url
 export default {
   name: 'itemDetail',
   props: {},
@@ -54,9 +59,11 @@ export default {
   },
   computed: {
     fullName () {
+      /* 物品名拼接 */
       return this.item.name + " " + this.item.subName;
     },
     finalPrice () {
+      /*留后续打折用接口 */
       return this.item.price;
     }
   },
@@ -74,24 +81,38 @@ export default {
         .catch(err => console.log('物品类型列表获取失败', err))
     },
     deleteData: function () {
+      /**
+       * 前进时初始化数据
+       */
       this.item = {}
     },
-    seItemId: function() {
-
+    toCourse: function () {
+      /**
+       * 存储item的id
+       * 路由 ->课程类别列表
+       */
       window.sessionStorage.setItem('item', JSON.stringify(this.item))
+      this.$router.push({ path: 'courseTypeList' })
     }
   },
   created () {
     this.isFirstEnter = true
   },
   beforeRouteEnter (to, from, next) {
+    /**
+     * routerMap后退映射
+     * isBack路由后退
+     */
     if (routerMap[to.name] === from.name) {
       to.meta.isBack = true
-      window.sessionStorage.setItem('item', '')
+      
     }
     next()
   },
   activated () {
+    /**
+     * 非初次进入或者非后退时要重新请求
+     */
     if (!this.$route.meta.isBack || this.isFirstEnter) {
       this.deleteData()
       this.getData(`${axiosPath}?itemId=${this.$route.query.itemId}`, (res) => {
@@ -105,23 +126,31 @@ export default {
 };
 </script>
 <style scoped>
+/* module itemDetail begin */
+
+/* 价格字体颜色  begin*/
 .price {
   color: #ff3300;
 }
-.item {
+/* 价格字体颜色  end*/
+
+/* item-info begin */
+.item-info {
   width: 100%;
   padding: 2em 2em 0 2em;
   box-sizing: border-box;
   border: 1px solid #000;
 }
-.item * {
+.item-info * {
   width: 100%;
   margin-bottom: 1em;
 }
-.item p {
+.item-info p {
   font-size: 2.5em;
 }
+/* item-info end */
 
+/* item-status begin */
 .item-status {
   width: 100%;
   font-size: 2.5em;
@@ -140,25 +169,9 @@ export default {
   float: right;
   margin-right: 2em;
 }
+/* item-status end */
 
-.choice {
-  display: block;
-  width: 100%;
-  font-size: 2.5em;
-  box-sizing: border-box;
-  border: 1px solid #000;
-  color: #000;
-  padding: 0.5em 0 0.5em 0;
-}
-.choice span:first-of-type {
-  float: left;
-  margin-left: 2em;
-}
-.choice span:last-of-type {
-  float: right;
-  margin-right: 2em;
-}
-
+/* item-detail begin */
 .item-detail {
   width: 100%;
   font-size: 2.5em;
@@ -176,28 +189,33 @@ export default {
   padding: 2em;
   box-sizing: border-box;
 }
+/* item-detail end */
 
-.button {
+/* item-router-button begin */
+.item-router-button {
   width: 100%;
   display: flex;
 }
-.button p {
+.item-router-button p {
   flex-grow: 1;
   text-align: center;
   line-height: inherit;
   font-size: 2.5em;
 }
-.button button {
+.item-router-button button {
   font-size: 2.5em;
   width: 6em;
   height: 2em;
   color: #fff;
   outline: none;
 }
-.button button:first-of-type {
+.item-router-button button:first-of-type {
   background-color: #ffcc00;
 }
-.button button:last-of-type {
+.item-router-button button:last-of-type {
   background-color: #0066ff;
 }
+/* item-router-button end */
+
+/* module itemDetail end */
 </style>

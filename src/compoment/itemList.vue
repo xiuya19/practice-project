@@ -1,20 +1,23 @@
 <template>
+  <!-- 对应种类物品的列表 -->
   <div class="topFixed">
 
     <Head :title="title"></Head>
+    <!-- 路由 ->物品详情 begin-->
     <router-link class="item-list-box clearFix"
                  v-for="it in itemLists"
                  :key="it.id"
                  :to="{name:'itemDetail',query:{itemId:it.itemId}}">
       <div class="item-box">
         <img :src="it.src"
-             alt />
+             :alt="it.itemName" />
         <span>{{it.itemName}}</span>
       </div>
       <div class="price-box">
         <p>价格：{{it.price}}</p>
       </div>
     </router-link>
+    <!-- 路由 对应种类物品的列表->物品详情 end-->
   </div>
 </template>
 
@@ -44,6 +47,9 @@ export default {
         .catch(err => console.log('物品列表获取失败', err))
     },
     deleteData: function () {
+      /**
+       * 前进时初始化数据
+       */
       this.itemLists = []
     }
   },
@@ -51,12 +57,20 @@ export default {
     this.isFirstEnter = true
   },
   beforeRouteEnter (to, from, next) {
+    /**
+     * routerMap后退映射
+     * isBack路由后退
+     */
     if (routerMap[to.name] === from.name) {
       to.meta.isBack = true
+      window.sessionStorage.setItem('item', '')
     }
     next()
   },
   activated () {
+    /**
+     * 非初次进入或者非后退时要重新请求
+     */
     if (!this.$route.meta.isBack || this.isFirstEnter) {
       this.deleteData()
       this.getData(`${axiosPath}?listId=${this.$route.query.listId}`, (res) => {
@@ -70,6 +84,9 @@ export default {
 };
 </script>
 <style scoped>
+/* module itemList begin */
+
+/* item-list-box begin */
 .item-list-box {
   width: 100%;
   box-sizing: border-box;
@@ -77,6 +94,7 @@ export default {
   padding: 2em;
   border: 1px solid #000;
 }
+/* item-box begin */
 .item-list-box .item-box {
   float: left;
   display: flex;
@@ -86,16 +104,24 @@ export default {
   width: 20em;
   height: 20em;
 }
+.price-box p,
+.item-box span {
+  font-size: 3em;
+  color: #777;
+}
+.item-box span {
+  padding-left: 1em;
+}
+/* item-box end */
+
+/* price-box begin */
 .item-list-box .price-box {
   float: right;
   line-height: 20em;
 }
-p,
-span {
-  font-size: 3em;
-  color: #777;
-}
-span {
-  padding-left: 1em;
-}
+/* price-box end */
+
+/* item-list-box end */
+
+/* module itemList end */
 </style>

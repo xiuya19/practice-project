@@ -1,6 +1,9 @@
 <template>
+  <!-- 标题模块 -->
   <header>
+    <!-- 后退键 -->
     <span @click="back">&lt;</span>
+    <!-- 标题 -->
     <h1>{{title}}</h1>
   </header>
 </template>
@@ -16,15 +19,19 @@ export default {
   },
   methods: {
     back: function() {
+      // console.log(`router ${this.$route.path}`)
       if (this.$route.path === "/home") {
-        window.location = '/abc.html'
+        window.location = '/fatherIndex.html'
       }
-      this.$router.go(-1);
+      else {
+        this.$router.go(-1);
+      }
     }
   }
 };
 </script>
 <style scoped>
+/* module head begin */
 header {
   position: fixed;
   top:0;
@@ -45,4 +52,5 @@ header h1 {
   display: inline;
   margin-right: 0.75em;
 }
+/* module head end */
 </style>

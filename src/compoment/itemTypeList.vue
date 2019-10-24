@@ -1,18 +1,26 @@
 <template>
+  <!-- 物品种类列表 -->
   <div class="topFixed">
 
     <Head :title='title'></Head>
+    <!-- search模块 begin-->
     <Search></Search>
+    <!-- search模块 end-->
+
+    <!-- 物品种类列表 begin-->
     <div class="item-type-list">
+      <!-- 路由 ->对应种类的物品列表  begin-->
       <router-link class="item-type"
                    v-for="it in typeList"
                    :key="it.id"
                    :to="{name:'itemList',query:{listId:it.id}}">
         <img :src="it.src"
-             alt />
+             :alt="it.type" />
         <p>{{it.type}}</p>
       </router-link>
+      <!-- 路由 种类列表->对应种类的物品列表  end-->
     </div>
+    <!-- 物品种类列表 end-->
   </div>
 </template>
 
@@ -46,6 +54,9 @@ export default {
         .catch(err => console.log('物品类型列表获取失败', err))
     },
     deleteData: function () {
+      /**
+       * 前进时初始化数据
+       */
       this.typeList = []
     }
   },
@@ -53,12 +64,19 @@ export default {
     this.isFirstEnter = true
   },
   beforeRouteEnter (to, from, next) {
+    /**
+     * routerMap后退映射
+     * isBack路由后退
+     */
     if (routerMap[to.name] === from.name) {
       to.meta.isBack = true
     }
     next()
   },
   activated () {
+    /**
+     * 非初次进入或者非后退时要重新请求
+     */
     if (!this.$route.meta.isBack || this.isFirstEnter) {
       this.deleteData()
       this.getData(axiosPath, (res) => {
@@ -71,6 +89,9 @@ export default {
 };
 </script>
 <style scoped>
+/* module itemTypeList begin */
+
+/* item-type-list begin */
 .item-type-list {
   width: 100%;
   overflow: hidden;
@@ -78,6 +99,8 @@ export default {
   flex-wrap: wrap;
   margin-top: 3em;
 }
+
+/* item-type begin */
 .item-type-list .item-type {
   cursor: pointer;
   width: 25.5em;
@@ -95,4 +118,9 @@ export default {
   font-size: 2.5em;
   color: #000;
 }
+/* item-type end */
+
+/* item-type-list end */
+
+/* module itemTypeList end */
 </style>

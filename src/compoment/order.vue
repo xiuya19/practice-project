@@ -2,7 +2,10 @@
   <div class="topFixed">
 
     <Head :title="title"></Head>
+    <!-- order-box begin -->
     <div class="order-box">
+
+      <!-- order-receive-address begin -->
       <div class="order-receive-address">
         <p>
           <span>收货人：{{parent.name}}</span>
@@ -13,6 +16,9 @@
           <span>{{parent.address}}</span>
         </p>
       </div>
+      <!-- order-receive-address begin -->
+
+      <!-- order-item begin -->
       <div class="order-item">
         <div class="order-item-img">
           <img :src="item.src"
@@ -26,19 +32,32 @@
           </p>
         </div>
       </div>
+      <!-- order-item end -->
+
+      <!-- order-option begin -->
       <div class="order-option">
+        <!-- order-send begin -->
         <div class="order-send">
           <span>配送方式</span>
           <span>快递免邮</span>
         </div>
+        <!-- order-send end -->
+
+        <!-- order-gift-for begin -->
         <div class="order-gift-for">
           <span>奖品赠予</span>
           <span>{{childrenSring}}</span>
         </div>
+        <!-- order-gift-for end -->
+
+        <!-- order-course-for begin -->
         <div class="order-course-for">
           <span>课程选择</span>
           <span>{{course.name}}</span>
         </div>
+        <!-- order-course-for end -->
+
+        <!-- order-item-num begin -->
         <div class="order-item-num">
           <div>
             <span>购买数量</span>
@@ -49,12 +68,19 @@
             <button @click="itemAdd">+</button>
           </div>
         </div>
+        <!-- order-item-num end -->
+
+        <!-- order-receive-comment begin -->
         <div class="order-receive-comment">
           <span>买家留言</span>
           <input type="text"
                  v-model="leaveMessage" />
         </div>
+        <!-- order-receive-comment end -->
       </div>
+      <!-- order-option end -->
+
+      <!-- order-totle begin -->
       <div class="order-totle">
         <span>总共{{itemNum}}件商品</span>
         <div class="order-price">
@@ -62,19 +88,30 @@
           <span class="price">￥{{finalPrice}}</span>
         </div>
       </div>
+      <!-- order-totle end -->
+
+      <!-- order-commit begin -->
       <div class="order-commit">
         <div><span>合计金额：￥{{finalPrice}}</span></div>
         <button @click="commitOrder">提交订单</button>
       </div>
+      <!-- order-commit end -->
     </div>
+    <!-- order-box begin -->
+
+    <!-- corver begin 遮罩-->
     <div class="corver"
          v-show="popUp">
     </div>
+    <!-- corver end -->
+
+    <!-- pop-up begin -->
     <div class="pop-up"
          v-show="popUp">
       <p>{{popUpMessage}}</p>
       <button @click="nextPage">确定</button>
     </div>
+    <!-- pop-up end -->
   </div>
 </template>
 
@@ -100,17 +137,21 @@ export default {
   },
   computed: {
     fullName () {
+      /*物品名拼接 */
       return this.item.name + " " + this.item.subName;
     },
     finalPrice () {
+      /* 最终价格=物品*数量 */
       return (this.item.price * this.itemNum).toFixed(2)
     },
     childrenSring () {
+      /*孩子名字拼接 */
       return this.children.map(el => el.name).join(',')
     }
   },
   methods: {
     itemAdd: function () {
+      /* 物品数量+ */
       this.itemNum++;
     },
     itemSub: function () {
@@ -119,16 +160,19 @@ export default {
       }
     },
     commitOrder: function () {
+      /**
+       * 提交订单
+       * data为收集的订单数据对象
+       */
       let data = {
         parentId: this.parent.id,
-        
         courseId: this.course.id,
         score: this.score,
         itemId: this.item.itemId,
         itemNum: this.itemNum,
         leaveMessage: this.leaveMessage
       }
-      this.children.map(el => el.id).forEach( (el, index) => {
+      this.children.map(el => el.id).forEach((el, index) => {
         data[`children${index}`] = el
       })
       this.$axios.post('api/postOrder', this.$Qs.stringify(data))
@@ -138,7 +182,14 @@ export default {
         })
     },
     nextPage: function () {
+      /**
+       * 提交订单后的重定向
+       */
       this.popUp = false
+      window.sessionStorage.setItem('item', '')
+      window.sessionStorage.setItem('score', '')
+      window.sessionStorage.setItem('course', '')
+      window.sessionStorage.setItem('selectChildren', '')
       window.location = '/'
     },
     getData: function (path, callback) {
@@ -154,20 +205,33 @@ export default {
         .catch(err => console.log('订单获取失败', err))
     },
     deleteData: function () {
-      this.order = {},
-        this.item = {}
+      this.popUp = false
+      this.itemNum = 1
+      this.course = ''
+      this.score = ''
+      this.leaveMessage = ''
+      this.children = []
+      this.parent = {}
+      this.item = {}
     }
   },
   created () {
     this.isFirstEnter = true
   },
   beforeRouteEnter (to, from, next) {
+    /**
+     * routerMap后退映射
+     * isBack路由后退
+     */
     if (routerMap[to.name] === from.name) {
       to.meta.isBack = true
     }
     next()
   },
   activated () {
+    /**
+     * 非初次进入或者非后退时要重新请求
+     */
     if (!this.$route.meta.isBack || this.isFirstEnter) {
       this.deleteData()
       this.getData(axiosPath, (res) => {
@@ -184,13 +248,21 @@ export default {
 };
 </script>
 <style scoped>
+/* module order begin */
+
+/* 价格字体颜色  begin*/
 .price {
   color: #ff3300;
 }
+/* 价格字体颜色  end*/
+
+/* .order-box begin */
 .order-box {
   width: 100%;
   font-size: 2.5em;
 }
+
+/* order-receive-address begin */
 .order-receive-address {
   border: 2px solid #000;
   box-sizing: border-box;
@@ -208,7 +280,9 @@ export default {
 .order-receive-address p:last-of-type span:first-of-type {
   width: 6em;
 }
+/* order-receive-address end */
 
+/* order-item begin */
 .order-item {
   width: 100%;
   display: flex;
@@ -216,7 +290,7 @@ export default {
   box-sizing: border-box;
 }
 .order-item-img {
-  width: 40%;
+  width: 10em;
   border-right: 2px solid #000;
   box-sizing: border-box;
   padding: 0.5em;
@@ -225,8 +299,9 @@ export default {
   width: 100%;
   height: 6em;
 }
+/* order-item-detail begin */
 .order-item-detail {
-  width: 60%;
+  width: 15em;
   padding: 1em 0.8em 1em 0.8em;
   box-sizing: border-box;
 }
@@ -237,7 +312,11 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.order-send,
+/* order-item-detail end */
+/* order-item end */
+
+/* order-option begin */
+.order-option .order-send,
 .order-gift-for,
 .order-course-for,
 .order-receive-comment {
@@ -248,6 +327,8 @@ export default {
   padding: 1em 0.8em 1em 0.8em;
   justify-content: space-between;
 }
+
+/* order-item-num begin */
 .order-item-num {
   width: 100%;
   box-sizing: border-box;
@@ -255,22 +336,25 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.order-item-num div:first-of-type {
-  box-sizing: border-box;
-  padding: 0.5em 0.8em 0.5em 0.8em;
-}
-.order-button {
+.order-item-num .order-button {
   box-sizing: border-box;
   border-left: 2px solid #000;
   padding: 0.5em 0.8em 0.5em 0.8em;
 }
-.order-button button {
+.order-item-num .order-button button {
   width: 1.5em;
   font-size: 1.5em;
   outline: none;
   background-color: transparent;
   border: 0px solid transparent;
 }
+.order-item-num div:first-of-type {
+  box-sizing: border-box;
+  padding: 0.5em 0.8em 0.5em 0.8em;
+}
+/* order-item-num end */
+
+/* order-receive-comment begin */
 .order-receive-comment input {
   flex-grow: 1;
   margin-left: 1em;
@@ -279,6 +363,10 @@ export default {
   border: 0px solid transparent;
   border-bottom: 2px solid #000;
 }
+/* order-receive-comment end */
+/* order-option end */
+
+/* order-totle begin */
 .order-totle {
   width: 100%;
   display: flex;
@@ -287,6 +375,9 @@ export default {
   border: 2px solid #000;
   padding: 1em 0.8em 1em 0.8em;
 }
+/* order-totle begin */
+
+/* order-commit begin */
 .order-commit {
   width: 100%;
   display: flex;
@@ -307,17 +398,22 @@ export default {
   border: 0px solid transparent;
   color: #fff;
 }
+/* order-commit begin */
 
+/* corver begin */
 .corver {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 0%;
-  left: 0%;
+  top: 0;
+  left: 0;
   background-color: #999;
   z-index: 1000;
   opacity: 0.7;
 }
+/* corver end */
+
+/* pop-up begin */
 .pop-up {
   position: absolute;
   left: 0;
@@ -348,4 +444,6 @@ export default {
   border-top: 2px solid #000;
   outline: none;
 }
+/* pop-up end */
+/* module order end */
 </style>

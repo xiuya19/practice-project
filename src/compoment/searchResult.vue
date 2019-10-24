@@ -29,10 +29,31 @@ export default {
   props: {},
   data () {
     return {
+      isFirstEnter: true,
       searchRes: true,
       title: '搜索结果',
       searchName: '',
       itemLists: []
+    }
+  },
+  methods: {
+    getData: function (path, callback) {
+      /**
+       * 根据path进行axios请求
+       * 获取的数据传入callback执行
+       */
+      this.$axios
+        .get(path)
+        .then(res => {
+          callback(res)
+        })
+        .catch(err => console.log('搜索结果失败', err))
+    },
+    deleteData: function () {
+      /**
+       * 前进时初始化数据
+       */
+      this.itemLists = []
     }
   },
   computed: {
@@ -43,15 +64,30 @@ export default {
       return this.itemLists.length === 0
     }
   },
+  created () {
+    this.isFirstEnter = true
+  },
+  beforeRouteEnter (to, from, next) {
+    /**
+     * routerMap后退映射
+     * isBack路由后退
+     */
+    if (from.name === 'itemDetail') {
+      to.meta.isBack = true
+    }
+    next()
+  },
   activated () {
-    this.itemLists = []
-    this.searchName = window.sessionStorage.getItem('searchName')
-    this.$axios.get(encodeURI(`api/search?itemName=${this.searchName}`))
-      .then(res => {
+    if (!this.$route.meta.isBack || this.isFirstEnter) {
+      this.deleteData()
+      this.searchName = window.sessionStorage.getItem('searchName')
+      this.getData(encodeURI(`api/search?itemName=${this.searchName}`), (res) => {
         if (res.data.code === 2000) {
           this.itemLists = this.$deepCloneJson(res.data.message.data)
         }
       })
+    }
+    this.$route.meta.isBack = false
   },
 }
 </script>
